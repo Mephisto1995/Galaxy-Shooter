@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float _speed = 0.0f;
+    [SerializeField] private float mSpeed = 0.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
-        transform.Translate(direction * _speed * Time.deltaTime);
+        transform.Translate(direction * mSpeed * Time.deltaTime);
     }
 
     private void KeepPlayerInBounds()
@@ -36,14 +36,7 @@ public class Player : MonoBehaviour
         const float LEFT_MARGIN = -RIGHT_MARGIN;
 
         // Does not work on different screen ratios (only 16:9). Working on it
-        if (transform.position.y >= UPPER_MARGIN)
-        {
-            transform.position = new Vector3(transform.position.x, UPPER_MARGIN, transform.position.z);
-        }
-        else if (transform.position.y < BOTTOM_MARGIN)
-        {
-            transform.position = new Vector3(transform.position.x, BOTTOM_MARGIN, transform.position.z);
-        }
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, BOTTOM_MARGIN, UPPER_MARGIN), transform.position.z);
 
         if (transform.position.x >= RIGHT_MARGIN)
         {
@@ -53,16 +46,5 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(LEFT_MARGIN, transform.position.y, transform.position.z);
         }
-
-        // Player logic to reapper on the opposite corner when going out of bounds
-        // Silky smooth transition
-        /*if (transform.position.x >= RIGHT_MARGIN)
-        {
-            transform.position = new Vector3(LEFT_MARGIN, transform.position.y, transform.position.z);
-        }
-        else if (transform.position.x < LEFT_MARGIN)
-        {
-            transform.position = new Vector3(RIGHT_MARGIN, transform.position.y, transform.position.z);
-        }*/
     }
 }
