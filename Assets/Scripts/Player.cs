@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float mSpeed = 0.0f;
+    [SerializeField] private float _speed = 0.0f;
+    [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private float _fireRate = 0.25f;
+
+    private float _canFire = -1f;
 
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(0, 0, 0);
+        transform.position = new Vector3(0, -1.11f, -2.54f);
     }
 
     // Update is called once per frame
@@ -17,6 +21,18 @@ public class Player : MonoBehaviour
     {
         PlayerMovement();
         KeepPlayerInBounds();
+
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        {
+            FireLaser();
+        }
+    }
+
+    private void FireLaser()
+    {
+        _canFire = Time.time + _fireRate;
+        Vector3 direction = transform.position + new Vector3(0, 0.8f, 0);
+        Instantiate(_laserPrefab, direction, Quaternion.identity);
     }
 
     private void PlayerMovement()
@@ -25,14 +41,14 @@ public class Player : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
-        transform.Translate(direction * mSpeed * Time.deltaTime);
+        transform.Translate(direction * _speed * Time.deltaTime);
     }
 
     private void KeepPlayerInBounds()
     {
-        const float BOTTOM_MARGIN = -3.8f;
+        const float BOTTOM_MARGIN = -2.37f;
         const float UPPER_MARGIN = 0f;
-        const float RIGHT_MARGIN = 11.3f;
+        const float RIGHT_MARGIN = 6.5f;
         const float LEFT_MARGIN = -RIGHT_MARGIN;
 
         // Does not work on different screen ratios (only 16:9). Working on it
