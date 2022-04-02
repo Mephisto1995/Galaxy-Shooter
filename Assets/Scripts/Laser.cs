@@ -1,26 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 public class Laser : MonoBehaviour
 {
-    [SerializeField] private float mSpeed;
+    [SerializeField] private float _speed;
     
     // Update is called once per frame
     void Update()
     {
-        Instantiate();
+        MoveUp();
         DestroyLaserObject();
     }
 
-    private void Instantiate()
+    private void MoveUp()
     {
-        transform.Translate(Vector3.up * mSpeed * Time.deltaTime);
+        transform.Translate(Vector3.up * _speed * Time.deltaTime);
     }
 
     private void DestroyLaserObject()
     {
-        const float DESTROY_DELAY = 1f;
-        Destroy(gameObject, DESTROY_DELAY);
+        if (transform.position.y > Constants.CAMERA_UPPER_POINT)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == Constants.TAG_ENEMY)
+        {
+            Destroy(gameObject);
+        }
     }
 }

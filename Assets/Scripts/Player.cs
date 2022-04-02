@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 public class Player : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(0, -1.11f, -2.54f);
+        transform.position = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
@@ -30,6 +31,8 @@ public class Player : MonoBehaviour
 
     private void FireLaser()
     {
+        Debug.Log("Player::FireLaser()");
+
         _canFire = Time.time + _fireRate;
         Vector3 direction = transform.position + new Vector3(0, 0.8f, 0);
         Instantiate(_laserPrefab, direction, Quaternion.identity);
@@ -37,8 +40,8 @@ public class Player : MonoBehaviour
 
     private void PlayerMovement()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        float horizontalInput = Input.GetAxis(Constants.HORIZONTAL);
+        float verticalInput = Input.GetAxis(Constants.VERTICAL);
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
         transform.Translate(direction * _speed * Time.deltaTime);
@@ -46,21 +49,24 @@ public class Player : MonoBehaviour
 
     private void KeepPlayerInBounds()
     {
-        const float BOTTOM_MARGIN = -2.37f;
-        const float UPPER_MARGIN = 0f;
-        const float RIGHT_MARGIN = 6.5f;
-        const float LEFT_MARGIN = -RIGHT_MARGIN;
-
         // Does not work on different screen ratios (only 16:9). Working on it
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, BOTTOM_MARGIN, UPPER_MARGIN), transform.position.z);
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, Constants.BOTTOM_MARGIN, Constants.UPPER_MARGIN), transform.position.z);
 
-        if (transform.position.x >= RIGHT_MARGIN)
+        if (transform.position.x >= Constants.RIGHT_MARGIN)
         {
-            transform.position = new Vector3(RIGHT_MARGIN, transform.position.y, transform.position.z);
+            transform.position = new Vector3(Constants.RIGHT_MARGIN, transform.position.y, transform.position.z);
         }
-        else if (transform.position.x < LEFT_MARGIN)
+        else if (transform.position.x < Constants.LEFT_MARGIN)
         {
-            transform.position = new Vector3(LEFT_MARGIN, transform.position.y, transform.position.z);
+            transform.position = new Vector3(Constants.LEFT_MARGIN, transform.position.y, transform.position.z);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == Constants.TAG_ENEMY)
+        {
+            Destroy(gameObject);
         }
     }
 }
