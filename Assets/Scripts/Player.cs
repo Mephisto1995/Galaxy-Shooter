@@ -43,14 +43,12 @@ public class Player : MonoBehaviour
 
     public void ActivatePowerup()
     {
-        Debug.LogWarning("ActivatePowerup");
         _isPowerUpActive = true;
         _timeActivatedPowerup = Time.time;
     }
 
     private void DeactivatePowerup()
     {
-        Debug.LogWarning("DeactivatePowerup");
         _isPowerUpActive = false;
     }
 
@@ -105,18 +103,15 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == Constants.TAG_POWERUP_TRIPLE_SHOT)
+        if (collision.tag == Constants.TAG_POWERUP_TRIPLE_SHOT) 
         {
             _isPowerUpActive = true;
         }
 
-        //if (collision.gameObject.tag == Constants.TAG_ENEMY)
-        //{
-        //    SpawnManager spawnManager = GameObject.Find(nameof(SpawnManager)).gameObject.GetComponent<SpawnManager>();
-        //    const bool isAlive = false;
-        //    spawnManager.PlayerStatus(isAlive);
-        //    Destroy(gameObject);
-        //}
+        if (collision.tag == Constants.TAG_PLAYER)
+        {
+            Destroy(gameObject);
+        }
     }
 
 

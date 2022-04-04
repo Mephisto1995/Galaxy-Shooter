@@ -521,7 +521,7 @@ MonoBehaviour:
   _tripleShotPrefab: {fileID: 2536732624797390038, guid: ad63ba841bffc764498e3846378d6029,
     type: 3}
   _speed: 10
-  _fireRate: 2
+  _fireRate: 0.15
 --- !u!212 &995313353
 SpriteRenderer:
   m_ObjectHideFlags: 0
