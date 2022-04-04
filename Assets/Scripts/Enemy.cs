@@ -18,27 +18,26 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         MoveEnemy();
+
+        if (ShouldDestroyEnemy()) 
+        {
+            Destroy(_enemyPrefab);
+        }
     }
 
     private void MoveEnemy()
     {
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
-
-        if (transform.position.y < Constants.CAMERA_DOWN_POINT)
-        {
-            SpawnEnemy();
-        }
     }
 
-    private void SpawnEnemy()
+    private bool ShouldDestroyEnemy()
     {
-        float rng = Random.Range(Constants.CAMERA_LEFT_POINT, Constants.CAMERA_RIGHT_POINT);
-        transform.position = new Vector3(rng, Constants.CAMERA_UPPER_POINT, 0);
+        return transform.position.y < Constants.CAMERA_DOWN_POINT;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.tag == Constants.TAG_LASER || other.tag == Constants.TAG_PLAYER)
+        if (collision.gameObject.tag == Constants.TAG_LASER || collision.gameObject.tag == Constants.TAG_PLAYER)
         {
             Destroy(gameObject);
         }

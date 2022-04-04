@@ -31,10 +31,8 @@ public class Player : MonoBehaviour
 
     private void FireLaser()
     {
-        Debug.Log("Player::FireLaser()");
-
         _canFire = Time.time + _fireRate;
-        Vector3 direction = transform.position + new Vector3(0, 0.8f, 0);
+        Vector3 direction = transform.position + new Vector3(0, Constants.LASER_SPAWN_OFFSET, 0);
         Instantiate(_laserPrefab, direction, Quaternion.identity);
     }
 
@@ -62,10 +60,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.tag == Constants.TAG_ENEMY)
+        if (collision.gameObject.tag == Constants.TAG_ENEMY) 
         {
+            SpawnManager spawnManager = GameObject.Find(nameof(SpawnManager)).gameObject.GetComponent<SpawnManager>();
+            const bool isAlive = false;
+            spawnManager.PlayerStatus(isAlive);
             Destroy(gameObject);
         }
     }

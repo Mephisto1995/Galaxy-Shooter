@@ -27,9 +27,9 @@ public class Laser : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.tag == Constants.TAG_ENEMY)
+        if(collision.gameObject.tag == Constants.TAG_ENEMY)
         {
             Destroy(gameObject);
         }
