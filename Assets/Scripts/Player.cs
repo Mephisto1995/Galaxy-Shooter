@@ -60,9 +60,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == Constants.TAG_ENEMY) 
+        if (collision.gameObject.tag == Constants.TAG_ENEMY)
         {
             SpawnManager spawnManager = GameObject.Find(nameof(SpawnManager)).gameObject.GetComponent<SpawnManager>();
             const bool isAlive = false;
