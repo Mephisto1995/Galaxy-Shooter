@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour
 
     private void MoveEnemy()
     {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        transform.Translate(Vector2.down * _speed * Time.deltaTime);
     }
 
     private bool ShouldDestroyEnemy()
@@ -37,9 +37,9 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == Constants.TAG_LASER || collision.gameObject.tag == Constants.TAG_PLAYER)
+        if (collision.gameObject.tag == Constants.TAG_LASER || collision.gameObject.tag == Constants.TAG_POWERUP_TRIPLE_SHOT || collision.gameObject.tag == Constants.TAG_PLAYER)
         {
-            Destroy(gameObject);
+            Destroy(_enemyPrefab);
         }
     }
 }

@@ -1,15 +1,21 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float _speed = 0.0f;
     [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private GameObject _tripleShotPrefab;
+
+    [SerializeField] private float _speed = 0.0f;
     [SerializeField] private float _fireRate = 0.25f;
 
     private float _canFire = -1f;
+    private bool _isPowerUpActive = false;
+    private float _powerupDuration = 0.0f;
+    private float _timeActivatedPowerup = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -22,18 +28,55 @@ public class Player : MonoBehaviour
     {
         PlayerMovement();
         KeepPlayerInBounds();
-
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        FireLaserHandler();
+        
+        if(_isPowerUpActive)
         {
-            FireLaser();
+            Debug.Log(Time.time - _timeActivatedPowerup);
+        }
+
+        if (_isPowerUpActive && Time.time - _timeActivatedPowerup >= _powerupDuration)
+        {
+            DeactivatePowerup();
         }
     }
 
-    private void FireLaser()
+    public void ActivatePowerup()
+    {
+        Debug.LogWarning("ActivatePowerup");
+        _isPowerUpActive = true;
+        _timeActivatedPowerup = Time.time;
+    }
+
+    private void DeactivatePowerup()
+    {
+        Debug.LogWarning("DeactivatePowerup");
+        _isPowerUpActive = false;
+    }
+
+    private void FireLaserHandler()
+    {
+        if(Input.GetKeyDown(KeyCode.Space) && CanFireSingleShot())
+        {
+            InstantiateLaserPrefab(_isPowerUpActive ? _tripleShotPrefab : _laserPrefab);
+        }
+    }
+
+    public void SetPowerupDuration(float powerupDuration)
+    {
+        _powerupDuration = powerupDuration;
+    }
+
+    private void InstantiateLaserPrefab(GameObject prefab)
     {
         _canFire = Time.time + _fireRate;
         Vector3 direction = transform.position + new Vector3(0, Constants.LASER_SPAWN_OFFSET, 0);
-        Instantiate(_laserPrefab, direction, Quaternion.identity);
+        Instantiate(prefab, direction, Quaternion.identity);
+    }
+
+    private bool CanFireSingleShot()
+    {
+        return Time.time > _canFire;
     }
 
     private void PlayerMovement()
@@ -60,14 +103,21 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == Constants.TAG_ENEMY)
+        if(collision.tag == Constants.TAG_POWERUP_TRIPLE_SHOT)
         {
-            SpawnManager spawnManager = GameObject.Find(nameof(SpawnManager)).gameObject.GetComponent<SpawnManager>();
-            const bool isAlive = false;
-            spawnManager.PlayerStatus(isAlive);
-            Destroy(gameObject);
+            _isPowerUpActive = true;
         }
+
+        //if (collision.gameObject.tag == Constants.TAG_ENEMY)
+        //{
+        //    SpawnManager spawnManager = GameObject.Find(nameof(SpawnManager)).gameObject.GetComponent<SpawnManager>();
+        //    const bool isAlive = false;
+        //    spawnManager.PlayerStatus(isAlive);
+        //    Destroy(gameObject);
+        //}
     }
+
+
 }

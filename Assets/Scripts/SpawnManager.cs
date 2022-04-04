@@ -1,43 +1,58 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utils;
 
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _enemyPrefab;
-    [SerializeField] private GameObject _enemyContainer;
+    [SerializeField] private GameObject _powerShotPrefab;
 
-    private bool _canSpawn = true;
+    [SerializeField] private GameObject _enemyContainer;
+    [SerializeField] private GameObject _powerShotContainer;
+
+    private bool _canSpawnEnemy = true;
+    private bool _canSpawnTripleShot = true;
 
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(SpawnEnemyRoutine());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        StartCoroutine(SpawnTripleShotPowerupRoutine());
     }
 
     IEnumerator SpawnEnemyRoutine()
     {
-        while (_canSpawn)
+        while (_canSpawnEnemy)
         {
-            float rng = Random.Range(Constants.CAMERA_LEFT_POINT, Constants.CAMERA_RIGHT_POINT);
-            Vector3 position = new Vector3(rng, Constants.CAMERA_UPPER_POINT, 0);
-
-            GameObject enemyInstance = Instantiate(_enemyPrefab, position, Quaternion.identity);
-            enemyInstance.transform.parent = _enemyContainer.transform;
-
+            AddObjectToContainer(GetSpawnItemRandomOnMap(_enemyPrefab), _enemyContainer);
             yield return new WaitForSeconds(1.0f);
         }
     }
 
+    IEnumerator SpawnTripleShotPowerupRoutine()
+    {
+        while(_canSpawnTripleShot)
+        {
+            AddObjectToContainer(GetSpawnItemRandomOnMap(_powerShotPrefab), _powerShotContainer);
+            yield return new WaitForSeconds(10.0f);
+        }
+    }
+
+    private GameObject GetSpawnItemRandomOnMap(GameObject prefab)
+    {
+        float rng = Random.Range(Constants.CAMERA_LEFT_POINT, Constants.CAMERA_RIGHT_POINT);
+        Vector3 position = new Vector3(rng, Constants.CAMERA_UPPER_POINT, 0);
+
+        return Instantiate(prefab, position, Quaternion.identity);
+    }
+
+    private void AddObjectToContainer(GameObject gameObject, GameObject container)
+    {
+        gameObject.transform.parent = container.transform;
+    }
+
     public void PlayerStatus(bool status)
     {
-        _canSpawn = status;
+        _canSpawnEnemy = status;
     }
 }
