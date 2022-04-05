@@ -6,13 +6,13 @@ using Utils;
 public class Laser : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private GameObject _tripleShotPrefab;
+    //[SerializeField] private GameObject _tripleShotPrefab;
     
     // Update is called once per frame
     void Update()
     {
         MoveUp();
-        DestroyLaserObject();
+        DestroyLaserObjectOutOfBounds();
     }
 
     private void MoveUp()
@@ -20,10 +20,15 @@ public class Laser : MonoBehaviour
         transform.Translate(Vector3.up * _speed * Time.deltaTime);
     }
 
-    private void DestroyLaserObject()
+    private void DestroyLaserObjectOutOfBounds()
     {
         if (transform.position.y > Constants.CAMERA_UPPER_POINT)
         {
+            if(transform.parent)
+            {
+                Destroy(transform.parent.gameObject);
+            }
+
             Destroy(gameObject);
         }
     }

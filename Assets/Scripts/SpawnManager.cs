@@ -5,10 +5,11 @@ using Utils;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _enemyPrefab;
-    [SerializeField] private GameObject _powerShotPrefab;
+    [SerializeField] private GameObject _powerShotPowerupPrefab;
+    [SerializeField] private GameObject _speedPowerupPrefab;
 
     [SerializeField] private GameObject _enemyContainer;
-    [SerializeField] private GameObject _powerShotContainer;
+    [SerializeField] private GameObject _powerupContainer;
 
     private bool _canSpawnPrefab = true;
 
@@ -17,6 +18,7 @@ public class SpawnManager : MonoBehaviour
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnTripleShotPowerupRoutine());
+        StartCoroutine(SpawnSpeedPowerupRoutine());
     }
 
     IEnumerator SpawnEnemyRoutine()
@@ -32,7 +34,16 @@ public class SpawnManager : MonoBehaviour
     {
         while(_canSpawnPrefab)
         {
-            AddObjectToContainer(GetSpawnItemRandomOnMap(_powerShotPrefab), _powerShotContainer);
+            AddObjectToContainer(GetSpawnItemRandomOnMap(_powerShotPowerupPrefab), _powerupContainer);
+            yield return new WaitForSeconds(Random.Range(3, 8));
+        }
+    }
+
+    IEnumerator SpawnSpeedPowerupRoutine()
+    {
+        while (_canSpawnPrefab)
+        {
+            AddObjectToContainer(GetSpawnItemRandomOnMap(_speedPowerupPrefab), _powerupContainer);
             yield return new WaitForSeconds(Random.Range(3, 8));
         }
     }

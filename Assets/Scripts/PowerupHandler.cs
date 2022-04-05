@@ -5,8 +5,9 @@ using Utils;
 
 public class PowerupHandler : MonoBehaviour
 {
-    [SerializeField] private float _speed;
+    [SerializeField] private float _speed = 3f;
     [SerializeField] private float _powerupDuration = 5f;
+    [SerializeField] private float _speedPowerupIncrease = 10f;
 
     // Update is called once per frame
     void Update()
@@ -30,9 +31,11 @@ public class PowerupHandler : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == Constants.TAG_PLAYER)
+        if (collision.tag == Constants.TAG_PLAYER)
         {
-            ActivateTripleShotPowerup();
+            Player player = GetPlayerReference();
+            player.SetPowerupDuration(_powerupDuration);
+            player.SetPowerupSpeedIncrease(_speedPowerupIncrease);
             Destroy(gameObject);
         }
     }
@@ -40,16 +43,5 @@ public class PowerupHandler : MonoBehaviour
     private Player GetPlayerReference()
     {
         return GameObject.Find(nameof(Player)).GetComponent<Player>();
-    }
-
-    private void ActivateTripleShotPowerup()
-    {
-        Player player = GetPlayerReference();
-
-        if (player != null) 
-        {
-            player.SetPowerupDuration(_powerupDuration);
-            player.ActivatePowerup();
-        }
     }
 }

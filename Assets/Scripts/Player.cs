@@ -13,9 +13,14 @@ public class Player : MonoBehaviour
     [SerializeField] private float _fireRate = 0.25f;
 
     private float _canFire = -1f;
+
     private bool _isTripleShotActive = false;
+    private bool _isSpeedActive = false;
     private float _powerupDuration = 0.0f;
-    private float _timeActivatedPowerup = 0f;
+
+    private float _timeActivatedTripleShotPowerup = 0f;
+    private float _timeActivatedSpeedPowerup = 0f;
+    private float _speedIncreasePowerup = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -32,22 +37,16 @@ public class Player : MonoBehaviour
         PowerupCancelHandler();
     }
 
-    public void ActivatePowerup()
-    {
-        _isTripleShotActive = true;
-        _timeActivatedPowerup = Time.time;
-    }
-
-    private void DeactivatePowerup()
-    {
-        _isTripleShotActive = false;
-    }
-
     private void PowerupCancelHandler()
     {
-        if (_isTripleShotActive && Time.time - _timeActivatedPowerup >= _powerupDuration)
+        if (_isTripleShotActive && Time.time - _timeActivatedTripleShotPowerup >= _powerupDuration)
         {
-            DeactivatePowerup();
+            _isTripleShotActive = false;
+        }
+
+        if (_isSpeedActive && Time.time - _timeActivatedSpeedPowerup >= _powerupDuration)
+        {
+            _isSpeedActive = false;
         }
     }
 
@@ -55,6 +54,8 @@ public class Player : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space) && CanFireSingleShot())
         {
+            Debug.Log("Player.FireLaserHandler(): _isTripleShotActive: " + _isTripleShotActive);
+
             ProcessLaserFireCooldownCalculation();
             InstantiateLaserPrefab(_isTripleShotActive ? _tripleShotPrefab : _laserPrefab);
         }
@@ -65,10 +66,15 @@ public class Player : MonoBehaviour
         _powerupDuration = powerupDuration;
     }
 
+    public void SetPowerupSpeedIncrease(float speed)
+    {
+        _speedIncreasePowerup = speed;
+    }
+
     private void InstantiateLaserPrefab(GameObject prefab)
     {
         Vector3 direction = transform.position + new Vector3(0, Constants.LASER_SPAWN_OFFSET, 0);
-        GameObject laserInstance = Instantiate(prefab, direction, Quaternion.identity);
+        Instantiate(prefab, direction, Quaternion.identity);
     }
 
     private bool CanFireSingleShot()
@@ -87,7 +93,7 @@ public class Player : MonoBehaviour
         float verticalInput = Input.GetAxis(Constants.VERTICAL);
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
-        transform.Translate(direction * _speed * Time.deltaTime);
+        transform.Translate(direction * ((_isSpeedActive) ? (_speed + _speedIncreasePowerup) : (_speed)) * Time.deltaTime);
     }
 
     private void KeepPlayerInBounds()
@@ -107,9 +113,16 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == Constants.TAG_POWERUP_TRIPLE_SHOT) 
+        if (collision.tag == Constants.TAG_POWERUP_TRIPLE_SHOT)
         {
             _isTripleShotActive = true;
+            _timeActivatedTripleShotPowerup = Time.time;
+        }
+
+        if (collision.tag == Constants.TAG_POWERUP_SPEED)
+        {
+            _isSpeedActive = true;
+            _timeActivatedSpeedPowerup = Time.time;
         }
 
         if (collision.tag == Constants.TAG_ENEMY)
