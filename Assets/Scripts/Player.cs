@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private GameObject _tripleShotPrefab;
+    [SerializeField] private GameObject _shieldVisualizer;
 
     [SerializeField] private float _speed = 0.0f;
     [SerializeField] private float _fireRate = 0.25f;
@@ -52,7 +53,8 @@ public class Player : MonoBehaviour
 
     public void ActivateShieldPowerup()
     {
-        _isTripleShotActive = true;
+        _isShieldActive = true;
+        _shieldVisualizer.SetActive(_isShieldActive);
         _timeActivatedShieldPowerup = Time.time;
     }
 
@@ -81,6 +83,7 @@ public class Player : MonoBehaviour
         if (_isShieldActive && IsTimeToDeactivatePowerup(_timeActivatedShieldPowerup))
         {
             _isShieldActive = false;
+            _shieldVisualizer.SetActive(_isShieldActive);
         }
     }
 
@@ -140,6 +143,11 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if(_isShieldActive)
+        {
+            return;
+        }
+
         if (collision.tag == Constants.TAG_ENEMY)
         {
             SpawnManager spawnManager = GameObject.Find(nameof(SpawnManager)).GetComponent<SpawnManager>();
