@@ -20,33 +20,24 @@ public class Laser : MonoBehaviour
         transform.Translate(Vector3.up * _speed * Time.deltaTime);
     }
 
-    private void DestroyLaserHandler()
-    {
-        Player player = GameObject.Find(nameof(Player)).GetComponent<Player>();
-
-        if (player != null)
-        {
-            Destroy(player.IsTripleShotActive() ? _tripleShotPrefab : gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
     private void DestroyLaserObject()
     {
         if (transform.position.y > Constants.CAMERA_UPPER_POINT)
         {
-            DestroyLaserHandler();
+            if (transform.parent)
+            {
+                Destroy(transform.parent.gameObject);
+            }
+
+            Destroy(gameObject);
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == Constants.TAG_ENEMY)
+        if (collision.tag == Constants.TAG_ENEMY)
         {
-            DestroyLaserHandler();
+            Destroy(gameObject);
         }
     }
 }

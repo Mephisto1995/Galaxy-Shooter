@@ -38,11 +38,6 @@ public class Player : MonoBehaviour
         _timeActivatedPowerup = Time.time;
     }
 
-    public bool IsTripleShotActive()
-    {
-        return _isTripleShotActive;
-    }
-
     private void DeactivatePowerup()
     {
         _isTripleShotActive = false;
@@ -73,7 +68,7 @@ public class Player : MonoBehaviour
     private void InstantiateLaserPrefab(GameObject prefab)
     {
         Vector3 direction = transform.position + new Vector3(0, Constants.LASER_SPAWN_OFFSET, 0);
-        Instantiate(prefab, direction, Quaternion.identity);
+        GameObject laserInstance = Instantiate(prefab, direction, Quaternion.identity);
     }
 
     private bool CanFireSingleShot()
@@ -129,6 +124,4 @@ public class Player : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-
 }

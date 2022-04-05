@@ -34,17 +34,9 @@ public class Enemy : MonoBehaviour
         return transform.position.y < Constants.CAMERA_DOWN_POINT;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == Constants.TAG_LASER || collision.gameObject.tag == Constants.TAG_POWERUP_TRIPLE_SHOT || collision.gameObject.tag == Constants.TAG_PLAYER)
-        {
-            Destroy(gameObject);
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == Constants.TAG_LASER || collision.gameObject.tag == Constants.TAG_POWERUP_TRIPLE_SHOT || collision.gameObject.tag == Constants.TAG_PLAYER)
+        if (collision.gameObject.tag == Constants.TAG_LASER || collision.gameObject.tag == Constants.TAG_PLAYER)
         {
             Destroy(gameObject);
         }
