@@ -24,11 +24,6 @@ public class Laser : MonoBehaviour
     {
         if (transform.position.y > Constants.CAMERA_UPPER_POINT)
         {
-            if (transform.parent)
-            {
-                Destroy(transform.parent.gameObject);
-            }
-
             Destroy(gameObject);
         }
     }
