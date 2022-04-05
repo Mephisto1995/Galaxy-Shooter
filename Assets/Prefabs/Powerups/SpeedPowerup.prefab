@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5406056412382055404}
   - component: {fileID: 9147239652664841923}
   - component: {fileID: 7446096292162502270}
+  - component: {fileID: 239963769}
   m_Layer: 0
   m_Name: SpeedPowerup
   m_TagString: SpeedPowerup
@@ -97,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 3
   _powerupDuration: 5
+  _speedPowerupIncrease: 10
 --- !u!61 &7446096292162502270
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -123,3 +125,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.1265693, y: 3.395557}
   m_EdgeRadius: 0
+--- !u!95 &239963769
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1995869053973240540}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 34492eb6e33b50148a975284e786e113, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
