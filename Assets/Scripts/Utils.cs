@@ -28,4 +28,17 @@ namespace Utils
         public static readonly string TAG_POWERUP_TRIPLE_SHOT  = "TripleShotPowerup";
         public static readonly string TAG_POWERUP_SPEED  = "SpeedPowerup";
     }
+
+    public static class Enums
+    {
+        public enum Powerups : int
+        {
+            POWERUP_UNKNOWN = -1,
+            POWERUP_TRIPLE_SHOT,
+            POWERUPT_SPEED,
+            POWERUP_SHIELD,
+
+            NUM_POWERUPS
+        }
+    }
 }

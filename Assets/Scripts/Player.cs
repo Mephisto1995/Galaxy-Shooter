@@ -16,10 +16,12 @@ public class Player : MonoBehaviour
 
     private bool _isTripleShotActive = false;
     private bool _isSpeedActive = false;
-    private float _powerupDuration = 0.0f;
+    private bool _isShieldActive = false;
 
+    private float _powerupDuration = 0.0f;
     private float _timeActivatedTripleShotPowerup = 0f;
     private float _timeActivatedSpeedPowerup = 0f;
+    private float _timeActivatedShieldPowerup = 0f;
     private float _speedIncreasePowerup = 0f;
 
     // Start is called before the first frame update
@@ -37,6 +39,24 @@ public class Player : MonoBehaviour
         PowerupCancelHandler();
     }
 
+    public void ActivateTripleShotPowerup()
+    {
+        _isTripleShotActive = true;
+        _timeActivatedTripleShotPowerup = Time.time;
+    }
+
+    public void ActivateSpeedPowerup()
+    {
+        _isSpeedActive = true;
+        _timeActivatedTripleShotPowerup = Time.time;
+    }
+
+    public void ActivateShieldPowerup()
+    {
+        _isTripleShotActive = true;
+        _timeActivatedTripleShotPowerup = Time.time;
+    }
+
     private void PowerupCancelHandler()
     {
         if (_isTripleShotActive && Time.time - _timeActivatedTripleShotPowerup >= _powerupDuration)
@@ -47,6 +67,11 @@ public class Player : MonoBehaviour
         if (_isSpeedActive && Time.time - _timeActivatedSpeedPowerup >= _powerupDuration)
         {
             _isSpeedActive = false;
+        }
+
+        if (_isShieldActive && Time.time - _timeActivatedShieldPowerup >= _powerupDuration)
+        {
+            _isShieldActive = false;
         }
     }
 
@@ -113,18 +138,6 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == Constants.TAG_POWERUP_TRIPLE_SHOT)
-        {
-            _isTripleShotActive = true;
-            _timeActivatedTripleShotPowerup = Time.time;
-        }
-
-        if (collision.tag == Constants.TAG_POWERUP_SPEED)
-        {
-            _isSpeedActive = true;
-            _timeActivatedSpeedPowerup = Time.time;
-        }
-
         if (collision.tag == Constants.TAG_ENEMY)
         {
             SpawnManager spawnManager = GameObject.Find(nameof(SpawnManager)).GetComponent<SpawnManager>();
