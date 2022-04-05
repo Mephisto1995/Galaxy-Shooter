@@ -5,11 +5,10 @@ using Utils;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject _enemyPrefab;
-    [SerializeField] private GameObject _powerShotPowerupPrefab;
-    [SerializeField] private GameObject _speedPowerupPrefab;
-
     [SerializeField] private GameObject _enemyContainer;
     [SerializeField] private GameObject _powerupContainer;
+
+    [SerializeField] private GameObject[] _powerUps;
 
     private bool _canSpawnPrefab = true;
 
@@ -17,8 +16,7 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(SpawnEnemyRoutine());
-        StartCoroutine(SpawnTripleShotPowerupRoutine());
-        StartCoroutine(SpawnSpeedPowerupRoutine());
+        StartCoroutine(SpawnRandomPowerup());
     }
 
     IEnumerator SpawnEnemyRoutine()
@@ -30,21 +28,13 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnTripleShotPowerupRoutine()
+    IEnumerator SpawnRandomPowerup()
     {
         while(_canSpawnPrefab)
         {
-            AddObjectToContainer(GetSpawnItemRandomOnMap(_powerShotPowerupPrefab), _powerupContainer);
-            yield return new WaitForSeconds(Random.Range(3, 8));
-        }
-    }
-
-    IEnumerator SpawnSpeedPowerupRoutine()
-    {
-        while (_canSpawnPrefab)
-        {
-            AddObjectToContainer(GetSpawnItemRandomOnMap(_speedPowerupPrefab), _powerupContainer);
-            yield return new WaitForSeconds(Random.Range(3, 8));
+            int randomPowerup = Random.Range(0, 2);
+            AddObjectToContainer(GetSpawnItemRandomOnMap(_powerUps[randomPowerup]), _powerupContainer);
+            yield return new WaitForSeconds(Random.Range(Constants.POWERUP_COOLDOWN_SPAWN_RANGE_LOW, Constants.POWERUP_COOLDOWN_SPAWN_RANGE_HIGH));
         }
     }
 

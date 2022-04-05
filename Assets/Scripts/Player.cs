@@ -18,19 +18,18 @@ public class Player : MonoBehaviour
     private bool _isSpeedActive = false;
     private bool _isShieldActive = false;
 
-    private float _powerupDuration = 0.0f;
+    private float _powerupDuration = 0f;
+    private float _speedIncreasePowerup = 0f;
+
     private float _timeActivatedTripleShotPowerup = 0f;
     private float _timeActivatedSpeedPowerup = 0f;
     private float _timeActivatedShieldPowerup = 0f;
-    private float _speedIncreasePowerup = 0f;
 
-    // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
     }
 
-    // Update is called once per frame
     void Update()
     {
         PlayerMovement();
@@ -48,42 +47,13 @@ public class Player : MonoBehaviour
     public void ActivateSpeedPowerup()
     {
         _isSpeedActive = true;
-        _timeActivatedTripleShotPowerup = Time.time;
+        _timeActivatedSpeedPowerup = Time.time;
     }
 
     public void ActivateShieldPowerup()
     {
         _isTripleShotActive = true;
-        _timeActivatedTripleShotPowerup = Time.time;
-    }
-
-    private void PowerupCancelHandler()
-    {
-        if (_isTripleShotActive && Time.time - _timeActivatedTripleShotPowerup >= _powerupDuration)
-        {
-            _isTripleShotActive = false;
-        }
-
-        if (_isSpeedActive && Time.time - _timeActivatedSpeedPowerup >= _powerupDuration)
-        {
-            _isSpeedActive = false;
-        }
-
-        if (_isShieldActive && Time.time - _timeActivatedShieldPowerup >= _powerupDuration)
-        {
-            _isShieldActive = false;
-        }
-    }
-
-    private void FireLaserHandler()
-    {
-        if(Input.GetKeyDown(KeyCode.Space) && CanFireSingleShot())
-        {
-            Debug.Log("Player.FireLaserHandler(): _isTripleShotActive: " + _isTripleShotActive);
-
-            ProcessLaserFireCooldownCalculation();
-            InstantiateLaserPrefab(_isTripleShotActive ? _tripleShotPrefab : _laserPrefab);
-        }
+        _timeActivatedShieldPowerup = Time.time;
     }
 
     public void SetPowerupDuration(float powerupDuration)
@@ -94,6 +64,38 @@ public class Player : MonoBehaviour
     public void SetPowerupSpeedIncrease(float speed)
     {
         _speedIncreasePowerup = speed;
+    }
+
+    private void PowerupCancelHandler()
+    {
+        if (_isTripleShotActive && IsTimeToDeactivatePowerup(_timeActivatedTripleShotPowerup))
+        {
+            _isTripleShotActive = false;
+        }
+
+        if (_isSpeedActive && IsTimeToDeactivatePowerup(_timeActivatedSpeedPowerup))
+        {
+            _isSpeedActive = false;
+        }
+
+        if (_isShieldActive && IsTimeToDeactivatePowerup(_timeActivatedShieldPowerup))
+        {
+            _isShieldActive = false;
+        }
+    }
+
+    private bool IsTimeToDeactivatePowerup(float timeSpent)
+    {
+        return Time.time - timeSpent >= _powerupDuration;
+    }
+
+    private void FireLaserHandler()
+    {
+        if(Input.GetKeyDown(KeyCode.Space) && CanFireSingleShot())
+        {
+            ProcessLaserFireCooldownCalculation();
+            InstantiateLaserPrefab(_isTripleShotActive ? _tripleShotPrefab : _laserPrefab);
+        }
     }
 
     private void InstantiateLaserPrefab(GameObject prefab)

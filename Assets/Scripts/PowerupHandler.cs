@@ -57,9 +57,6 @@ public class PowerupHandler : MonoBehaviour
                     break;
             }
 
-
-
-            player.SetPowerupSpeedIncrease(_speedPowerupIncrease);
             Destroy(gameObject);
         }
     }

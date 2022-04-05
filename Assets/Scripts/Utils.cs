@@ -15,7 +15,8 @@ namespace Utils
         public static readonly float CAMERA_LEFT_POINT  = -CAMERA_RIGHT_POINT;
         public static readonly float LASER_SPAWN_OFFSET = 0.8f;
 
-        public static readonly int NUM_LIVES = 3;
+        public static readonly int POWERUP_COOLDOWN_SPAWN_RANGE_LOW = 3;
+        public static readonly int POWERUP_COOLDOWN_SPAWN_RANGE_HIGH = 8;
         
 
         public static readonly string HORIZONTAL = "Horizontal";
