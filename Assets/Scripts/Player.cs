@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _fireRate = 0.25f;
 
     private float _canFire = -1f;
-    private bool _isPowerUpActive = false;
+    private bool _isTripleShotActive = false;
     private float _powerupDuration = 0.0f;
     private float _timeActivatedPowerup = 0f;
 
@@ -29,34 +29,39 @@ public class Player : MonoBehaviour
         PlayerMovement();
         KeepPlayerInBounds();
         FireLaserHandler();
-        
-        if(_isPowerUpActive)
-        {
-            Debug.Log(Time.time - _timeActivatedPowerup);
-        }
-
-        if (_isPowerUpActive && Time.time - _timeActivatedPowerup >= _powerupDuration)
-        {
-            DeactivatePowerup();
-        }
+        PowerupCancelHandler();
     }
 
     public void ActivatePowerup()
     {
-        _isPowerUpActive = true;
+        _isTripleShotActive = true;
         _timeActivatedPowerup = Time.time;
+    }
+
+    public bool IsTripleShotActive()
+    {
+        return _isTripleShotActive;
     }
 
     private void DeactivatePowerup()
     {
-        _isPowerUpActive = false;
+        _isTripleShotActive = false;
+    }
+
+    private void PowerupCancelHandler()
+    {
+        if (_isTripleShotActive && Time.time - _timeActivatedPowerup >= _powerupDuration)
+        {
+            DeactivatePowerup();
+        }
     }
 
     private void FireLaserHandler()
     {
         if(Input.GetKeyDown(KeyCode.Space) && CanFireSingleShot())
         {
-            InstantiateLaserPrefab(_isPowerUpActive ? _tripleShotPrefab : _laserPrefab);
+            ProcessLaserFireCooldownCalculation();
+            InstantiateLaserPrefab(_isTripleShotActive ? _tripleShotPrefab : _laserPrefab);
         }
     }
 
@@ -67,7 +72,6 @@ public class Player : MonoBehaviour
 
     private void InstantiateLaserPrefab(GameObject prefab)
     {
-        _canFire = Time.time + _fireRate;
         Vector3 direction = transform.position + new Vector3(0, Constants.LASER_SPAWN_OFFSET, 0);
         Instantiate(prefab, direction, Quaternion.identity);
     }
@@ -75,6 +79,11 @@ public class Player : MonoBehaviour
     private bool CanFireSingleShot()
     {
         return Time.time > _canFire;
+    }
+
+    private void ProcessLaserFireCooldownCalculation()
+    {
+        _canFire = Time.time + _fireRate;
     }
 
     private void PlayerMovement()
@@ -105,11 +114,18 @@ public class Player : MonoBehaviour
     {
         if (collision.tag == Constants.TAG_POWERUP_TRIPLE_SHOT) 
         {
-            _isPowerUpActive = true;
+            _isTripleShotActive = true;
         }
 
-        if (collision.tag == Constants.TAG_PLAYER)
+        if (collision.tag == Constants.TAG_ENEMY)
         {
+            SpawnManager spawnManager = GameObject.Find(nameof(SpawnManager)).GetComponent<SpawnManager>();
+
+            if (spawnManager) 
+            {
+                spawnManager.PlayerStatus(false);
+            }
+
             Destroy(gameObject);
         }
     }

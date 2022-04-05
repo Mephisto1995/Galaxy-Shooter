@@ -6,7 +6,6 @@ using Utils;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private GameObject _enemyPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -19,9 +18,9 @@ public class Enemy : MonoBehaviour
     {
         MoveEnemy();
 
-        if (ShouldDestroyEnemy()) 
+        if (IsEnemyOutOfBounds()) 
         {
-            Destroy(_enemyPrefab);
+            Destroy(gameObject);
         }
     }
 
@@ -30,7 +29,7 @@ public class Enemy : MonoBehaviour
         transform.Translate(Vector2.down * _speed * Time.deltaTime);
     }
 
-    private bool ShouldDestroyEnemy()
+    private bool IsEnemyOutOfBounds()
     {
         return transform.position.y < Constants.CAMERA_DOWN_POINT;
     }
@@ -39,7 +38,15 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.tag == Constants.TAG_LASER || collision.gameObject.tag == Constants.TAG_POWERUP_TRIPLE_SHOT || collision.gameObject.tag == Constants.TAG_PLAYER)
         {
-            Destroy(_enemyPrefab);
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == Constants.TAG_LASER || collision.gameObject.tag == Constants.TAG_POWERUP_TRIPLE_SHOT || collision.gameObject.tag == Constants.TAG_PLAYER)
+        {
+            Destroy(gameObject);
         }
     }
 }

@@ -6,13 +6,21 @@ using Utils;
 public class PowerupHandler : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private GameObject _prefab;
     [SerializeField] private float _powerupDuration = 5f;
 
     // Update is called once per frame
     void Update()
     {
         Move();
+        DestroyPowerupPrefabOutOfBounds();
+    }
+
+    private void DestroyPowerupPrefabOutOfBounds()
+    {
+        if (transform.position.y < Constants.CAMERA_DOWN_POINT)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Move()

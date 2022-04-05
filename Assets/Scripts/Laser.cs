@@ -6,6 +6,7 @@ using Utils;
 public class Laser : MonoBehaviour
 {
     [SerializeField] private float _speed;
+    [SerializeField] private GameObject _tripleShotPrefab;
     
     // Update is called once per frame
     void Update()
@@ -19,11 +20,25 @@ public class Laser : MonoBehaviour
         transform.Translate(Vector3.up * _speed * Time.deltaTime);
     }
 
+    private void DestroyLaserHandler()
+    {
+        Player player = GameObject.Find(nameof(Player)).GetComponent<Player>();
+
+        if (player != null)
+        {
+            Destroy(player.IsTripleShotActive() ? _tripleShotPrefab : gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void DestroyLaserObject()
     {
         if (transform.position.y > Constants.CAMERA_UPPER_POINT)
         {
-            Destroy(gameObject);
+            DestroyLaserHandler();
         }
     }
 
@@ -31,7 +46,7 @@ public class Laser : MonoBehaviour
     {
         if (collision.gameObject.tag == Constants.TAG_ENEMY)
         {
-            Destroy(gameObject);
+            DestroyLaserHandler();
         }
     }
 }
