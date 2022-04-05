@@ -10,8 +10,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject _enemyContainer;
     [SerializeField] private GameObject _powerShotContainer;
 
-    private bool _canSpawnEnemy = true;
-    private bool _canSpawnTripleShot = true;
+    private bool _canSpawnPrefab = true;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +21,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnEnemyRoutine()
     {
-        while (_canSpawnEnemy)
+        while (_canSpawnPrefab)
         {
             AddObjectToContainer(GetSpawnItemRandomOnMap(_enemyPrefab), _enemyContainer);
             yield return new WaitForSeconds(1.0f);
@@ -31,10 +30,10 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnTripleShotPowerupRoutine()
     {
-        while(_canSpawnTripleShot)
+        while(_canSpawnPrefab)
         {
             AddObjectToContainer(GetSpawnItemRandomOnMap(_powerShotPrefab), _powerShotContainer);
-            yield return new WaitForSeconds(10.0f);
+            yield return new WaitForSeconds(Random.Range(3, 8));
         }
     }
 
@@ -53,6 +52,6 @@ public class SpawnManager : MonoBehaviour
 
     public void PlayerStatus(bool status)
     {
-        _canSpawnEnemy = status;
+        _canSpawnPrefab = status;
     }
 }
