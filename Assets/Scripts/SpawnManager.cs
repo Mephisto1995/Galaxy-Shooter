@@ -3,11 +3,11 @@ using UnityEngine;
 using Utils;
 
 public class SpawnManager : MonoBehaviour
-{
-    [SerializeField] private GameObject _enemyPrefab;
+{ 
     [SerializeField] private GameObject _enemyContainer;
     [SerializeField] private GameObject _powerupContainer;
 
+    [SerializeField] private GameObject[] _enemies;
     [SerializeField] private GameObject[] _powerUps;
 
     private bool _canSpawnPrefab = true;
@@ -23,7 +23,8 @@ public class SpawnManager : MonoBehaviour
     {
         while (_canSpawnPrefab)
         {
-            AddObjectToContainer(GetSpawnItemRandomOnMap(_enemyPrefab), _enemyContainer);
+            int randomEnemy = Random.Range(0, _enemies.Length);
+            AddObjectToContainer(GetSpawnItemRandomOnMap(_enemies[randomEnemy]), _enemyContainer);
             yield return new WaitForSeconds(1.0f);
         }
     }
@@ -32,7 +33,7 @@ public class SpawnManager : MonoBehaviour
     {
         while(_canSpawnPrefab)
         {
-            int randomPowerup = Random.Range(0, 3);
+            int randomPowerup = Random.Range(0, _powerUps.Length);
             AddObjectToContainer(GetSpawnItemRandomOnMap(_powerUps[randomPowerup]), _powerupContainer);
             yield return new WaitForSeconds(Random.Range(Constants.POWERUP_COOLDOWN_SPAWN_RANGE_LOW, Constants.POWERUP_COOLDOWN_SPAWN_RANGE_HIGH));
         }

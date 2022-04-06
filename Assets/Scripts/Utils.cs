@@ -17,7 +17,9 @@ namespace Utils
 
         public static readonly int POWERUP_COOLDOWN_SPAWN_RANGE_LOW = 3;
         public static readonly int POWERUP_COOLDOWN_SPAWN_RANGE_HIGH = 8;
-        
+
+        public static readonly int ENEMY_DESTROYED_SHIP = 100;
+        public static readonly int ENEMY_DESTROYED_ASTEROID = 50;
 
         public static readonly string HORIZONTAL = "Horizontal";
         public static readonly string VERTICAL   = "Vertical";
@@ -40,6 +42,15 @@ namespace Utils
             POWERUP_SHIELD,
 
             NUM_POWERUPS
+        }
+
+        public enum Enemies : int
+        {
+            ENEMY_UNKOWN = -1,
+            ENEMY_SHIP,
+            ENEMY_ASTEROID,
+
+            NUM_ENEMIES
         }
     }
 }

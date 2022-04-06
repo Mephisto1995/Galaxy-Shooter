@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
 
     private void MoveEnemy()
     {
-        transform.Translate(Vector2.down * _speed * Time.deltaTime);
+        transform.Translate(Vector3.down * _speed * Time.deltaTime);
     }
 
     private bool IsEnemyOutOfBounds()
