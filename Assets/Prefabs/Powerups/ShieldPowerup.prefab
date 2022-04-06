@@ -124,8 +124,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 3
   _powerupDuration: 5
-  _speedPowerupIncrease: 10
-  _powerupID: 2
+  _speedPowerupIncrease: -1
+  _powerupId: 2
 --- !u!95 &1993650265
 Animator:
   serializedVersion: 3

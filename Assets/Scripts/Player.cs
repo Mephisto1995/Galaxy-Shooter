@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float _speed = 0.0f;
     [SerializeField] private float _fireRate = 0.25f;
+    [SerializeField] private UIManager _uIManager;
 
     private float _canFire = -1f;
 
@@ -26,9 +27,14 @@ public class Player : MonoBehaviour
     private float _timeActivatedSpeedPowerup = 0f;
     private float _timeActivatedShieldPowerup = 0f;
 
+    private int _score = 0;
+
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
+        _uIManager = HelperFunctions.GetUIManagerReference();
+
+        HelperFunctions.CheckForNull(_uIManager);
     }
 
     void Update()
@@ -38,6 +44,8 @@ public class Player : MonoBehaviour
         FireLaserHandler();
         PowerupCancelHandler();
     }
+
+    #region Public Methods
 
     public void ActivateTripleShotPowerup()
     {
@@ -58,6 +66,11 @@ public class Player : MonoBehaviour
         _timeActivatedShieldPowerup = Time.time;
     }
 
+    public bool IsShieldActive()
+    {
+        return _isShieldActive;
+    }
+
     public void SetPowerupDuration(float powerupDuration)
     {
         _powerupDuration = powerupDuration;
@@ -68,6 +81,21 @@ public class Player : MonoBehaviour
         _speedIncreasePowerup = speed;
     }
 
+    public int GetScore()
+    {
+        return _score;
+    }
+
+    public void HandleScoreSystem(int value)
+    {
+        Debug.Log("Player.HandleScoreSystem(): _score: " + _score + " value to be added: " + value);
+        _score += value;
+        _uIManager.UpdateScore(_score);
+    }
+
+    #endregion
+
+    #region Private Methods
     private void PowerupCancelHandler()
     {
         if (_isTripleShotActive && IsTimeToDeactivatePowerup(_timeActivatedTripleShotPowerup))
@@ -150,7 +178,7 @@ public class Player : MonoBehaviour
 
         if (collision.tag == Constants.TAG_ENEMY)
         {
-            SpawnManager spawnManager = GameObject.Find(nameof(SpawnManager)).GetComponent<SpawnManager>();
+            SpawnManager spawnManager = HelperFunctions.GetSpawnManagerReference();
 
             if (spawnManager) 
             {
@@ -158,6 +186,9 @@ public class Player : MonoBehaviour
             }
 
             Destroy(gameObject);
+            _uIManager.DisplayGameOverText();
         }
     }
+
+    #endregion
 }

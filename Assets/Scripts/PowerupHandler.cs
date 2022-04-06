@@ -8,7 +8,14 @@ public class PowerupHandler : MonoBehaviour
     [SerializeField] private float _speed = 3f;
     [SerializeField] private float _powerupDuration = 5f;
     [SerializeField] private float _speedPowerupIncrease = 10f;
-    [SerializeField] private int _powerupID = -1;
+    [SerializeField] private int _powerupId = -1;
+
+    private Player _player;
+
+    private void Start()
+    {
+        _player = HelperFunctions.GetPlayerReference();
+    }
 
     // Update is called once per frame
     void Update()
@@ -34,35 +41,32 @@ public class PowerupHandler : MonoBehaviour
     {
         if (collision.tag == Constants.TAG_PLAYER)
         {
-            Player player = GetPlayerReference();
-            player.SetPowerupDuration(_powerupDuration);
+            _player.SetPowerupDuration(_powerupDuration);
 
-            switch (_powerupID)
+            if (_player)
             {
-                case (int)Enums.Powerups.POWERUP_TRIPLE_SHOT:
-                    player.ActivateTripleShotPowerup();
-                    break;
+                switch (_powerupId)
+                {
+                    case (int)Enums.Powerups.POWERUP_TRIPLE_SHOT:
+                        _player.ActivateTripleShotPowerup();
+                        break;
 
-                case (int)Enums.Powerups.POWERUPT_SPEED:
-                    player.ActivateSpeedPowerup();
-                    player.SetPowerupSpeedIncrease(_speedPowerupIncrease);
-                    break;
+                    case (int)Enums.Powerups.POWERUPT_SPEED:
+                        _player.ActivateSpeedPowerup();
+                        _player.SetPowerupSpeedIncrease(_speedPowerupIncrease);
+                        break;
 
-                case (int)Enums.Powerups.POWERUP_SHIELD:
-                    player.ActivateShieldPowerup();
-                    break;
+                    case (int)Enums.Powerups.POWERUP_SHIELD:
+                        _player.ActivateShieldPowerup();
+                        break;
 
-                default:
-                    Debug.LogError("PowerupID value is out of bounds: " + _powerupID);
-                    break;
+                    default:
+                        Debug.LogError("PowerupID value is out of bounds: " + _powerupId);
+                        break;
+                }
             }
 
             Destroy(gameObject);
         }
-    }
-
-    private Player GetPlayerReference()
-    {
-        return GameObject.Find(nameof(Player)).GetComponent<Player>();
     }
 }

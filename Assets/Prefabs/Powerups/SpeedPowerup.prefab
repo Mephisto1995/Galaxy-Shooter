@@ -99,7 +99,7 @@ MonoBehaviour:
   _speed: 3
   _powerupDuration: 5
   _speedPowerupIncrease: 10
-  _powerupID: 1
+  _powerupId: 1
 --- !u!61 &7446096292162502270
 BoxCollider2D:
   m_ObjectHideFlags: 0

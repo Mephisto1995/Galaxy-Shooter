@@ -18,8 +18,8 @@ namespace Utils
         public static readonly int POWERUP_COOLDOWN_SPAWN_RANGE_LOW = 3;
         public static readonly int POWERUP_COOLDOWN_SPAWN_RANGE_HIGH = 8;
 
-        public static readonly int ENEMY_DESTROYED_SHIP = 100;
-        public static readonly int ENEMY_DESTROYED_ASTEROID = 50;
+        public static readonly int ENEMY_DESTROYED_SHIP_VALUE = 100;
+        public static readonly int ENEMY_DESTROYED_ASTEROID_VALUE = 50;
 
         public static readonly string HORIZONTAL = "Horizontal";
         public static readonly string VERTICAL   = "Vertical";
@@ -29,7 +29,10 @@ namespace Utils
         public static readonly string TAG_LASER  = "Laser";
 
         public static readonly string TAG_POWERUP_TRIPLE_SHOT  = "TripleShotPowerup";
-        public static readonly string TAG_POWERUP_SPEED  = "SpeedPowerup";
+        public static readonly string TAG_POWERUP_SPEED = "SpeedPowerup";
+
+        public static readonly string STRING_SCORE = "Score: ";
+        public static readonly string STRING_GAME_OVER = "GAME OVER";
     }
 
     public static class Enums
@@ -51,6 +54,33 @@ namespace Utils
             ENEMY_ASTEROID,
 
             NUM_ENEMIES
+        }
+    }
+
+    public static class HelperFunctions
+    {
+        public static Player GetPlayerReference()
+        {
+            return GameObject.Find(nameof(Player)).GetComponent<Player>();
+        }
+
+        public static SpawnManager GetSpawnManagerReference()
+        {
+            return GameObject.Find(nameof(SpawnManager)).GetComponent<SpawnManager>(); ;
+        }
+
+        public static UIManager GetUIManagerReference()
+        {
+            return GameObject.Find(nameof(Canvas)).GetComponent<UIManager>();
+        }
+
+        // mostly used for objects created at startup
+        public static void CheckForNull(object obj)
+        {
+            if(obj == null)
+            {
+                Debug.LogError(obj + " is null!");
+            }
         }
     }
 }
