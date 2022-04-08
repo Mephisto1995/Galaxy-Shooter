@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3487913843517114386}
   - component: {fileID: 3551436895356857584}
-  - component: {fileID: 3559236376838634822}
   - component: {fileID: 7939153355822123381}
+  - component: {fileID: 3559236376838634822}
   - component: {fileID: 1346091080}
   m_Layer: 0
   m_Name: TripleShotPowerup
@@ -84,6 +84,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7939153355822123381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7353455564545068263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46880c6322353e94eb4fce631e04fde0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 3
+  _powerupDuration: 5
+  _speedPowerupIncrease: -1
+  _powerupId: 0
 --- !u!61 &3559236376838634822
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -110,22 +126,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.881869, y: 3.4552083}
   m_EdgeRadius: 0
---- !u!114 &7939153355822123381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7353455564545068263}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46880c6322353e94eb4fce631e04fde0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 3
-  _powerupDuration: 5
-  _speedPowerupIncrease: -1
-  _powerupId: 0
 --- !u!95 &1346091080
 Animator:
   serializedVersion: 3

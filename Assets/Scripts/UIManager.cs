@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private Text _scoreText;
     [SerializeField] private Text _gameOverText;
+    [SerializeField] private Text _restartText;
 
     public void UpdateScore(int score)
     {
@@ -15,14 +16,15 @@ public class UIManager : MonoBehaviour
         _scoreText.text = Constants.STRING_SCORE + score;
     }
 
-    public void DisplayGameOverText()
+    public void GameOverSequence()
     {
+        _restartText.text = Constants.STRING_RESTART;
         StartCoroutine(GameOverFlickerRoutine());
     }
 
     private IEnumerator GameOverFlickerRoutine()
     {
-        while(true)
+        while (true)
         {
             _gameOverText.text = Constants.STRING_GAME_OVER;
             yield return new WaitForSeconds(0.5f);

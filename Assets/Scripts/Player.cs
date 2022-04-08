@@ -12,7 +12,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float _speed = 0.0f;
     [SerializeField] private float _fireRate = 0.25f;
+
     [SerializeField] private UIManager _uIManager;
+    [SerializeField] private GameManager _gameManager;
 
     private float _canFire = -1f;
 
@@ -33,8 +35,10 @@ public class Player : MonoBehaviour
     {
         transform.position = new Vector3(0, 0, 0);
         _uIManager = HelperFunctions.GetUIManagerReference();
+        _gameManager = HelperFunctions.GetGameManagerReference();
 
         HelperFunctions.CheckForNull(_uIManager);
+        HelperFunctions.CheckForNull(_gameManager);
     }
 
     void Update()
@@ -169,6 +173,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void EndGameSequence()
+    {
+        _uIManager.GameOverSequence();
+        _gameManager.SetGameOver(true);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(_isShieldActive)
@@ -186,7 +196,7 @@ public class Player : MonoBehaviour
             }
 
             Destroy(gameObject);
-            _uIManager.DisplayGameOverText();
+            EndGameSequence();
         }
     }
 

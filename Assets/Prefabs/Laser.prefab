@@ -46,8 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 20
-  _tripleShotPrefab: {fileID: 2536732624797390038, guid: ad63ba841bffc764498e3846378d6029,
-    type: 3}
 --- !u!212 &7059341875481691817
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -108,7 +106,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.000000037252903, y: 0.025229305}
