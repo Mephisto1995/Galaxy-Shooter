@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 namespace Utils
 {
     public static class Constants
@@ -35,7 +37,8 @@ namespace Utils
         public static readonly string STRING_GAME_OVER = "GAME OVER";
         public static readonly string STRING_RESTART = "Press R to Restart the Game";
 
-        public static readonly int SCENE_GAME = 0;
+        public static readonly int SCENE_MAIN_MENU = 0;
+        public static readonly int SCENE_GAME = 1;
     }
 
     public static class Enums
@@ -80,6 +83,11 @@ namespace Utils
         public static GameManager GetGameManagerReference()
         {
             return GameObject.Find(nameof(GameManager)).GetComponent<GameManager>();
+        }
+
+        public static void LoadScene(int sceneIndex)
+        {
+            SceneManager.LoadScene(sceneIndex);
         }
 
         // mostly used for objects created at startup
