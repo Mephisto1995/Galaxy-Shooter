@@ -17,6 +17,17 @@ public class UIManager : MonoBehaviour
 
     public void DisplayGameOverText()
     {
-        _gameOverText.text = Constants.STRING_GAME_OVER;
+        StartCoroutine(GameOverFlickerRoutine());
+    }
+
+    private IEnumerator GameOverFlickerRoutine()
+    {
+        while(true)
+        {
+            _gameOverText.text = Constants.STRING_GAME_OVER;
+            yield return new WaitForSeconds(0.5f);
+            _gameOverText.text = "";
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 }
