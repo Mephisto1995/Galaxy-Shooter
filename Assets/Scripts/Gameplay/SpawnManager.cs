@@ -24,7 +24,7 @@ public class SpawnManager : MonoBehaviour
         while (_canSpawnPrefab)
         {
             int randomEnemy = Random.Range(0, _enemies.Length);
-            AddObjectToContainer(GetSpawnItemRandomOnMap(_enemies[randomEnemy]), _enemyContainer);
+            AddObjectToContainer(GetSpawnItemRandomOnMap(_enemies[0]), _enemyContainer);
             yield return new WaitForSeconds(1.0f);
         }
     }

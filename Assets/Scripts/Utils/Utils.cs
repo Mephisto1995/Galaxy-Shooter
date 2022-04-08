@@ -39,6 +39,10 @@ namespace Utils
 
         public static readonly int SCENE_MAIN_MENU = 0;
         public static readonly int SCENE_GAME = 1;
+
+        public static readonly string TRIGGER_ENEMY_DESTROYED_ANIMATION = "OnEnemyDeath";
+
+        public static readonly float ENEMY_DESTROYED_DELAY = 2.8f;
     }
 
     public static class Enums
@@ -91,7 +95,7 @@ namespace Utils
         }
 
         // mostly used for objects created at startup
-        public static void CheckForNull(object obj)
+        public static void NullCheck(object obj)
         {
             if(obj == null)
             {

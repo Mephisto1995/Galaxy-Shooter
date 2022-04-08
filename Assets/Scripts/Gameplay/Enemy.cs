@@ -9,11 +9,16 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int _enemyId = -1;
 
     private Player _player;
+    private Animator _animator;
 
     // Start is called before the first frame update
     void Start()
     {
         _player = HelperFunctions.GetPlayerReference();
+        _animator = GetComponent<Animator>();
+
+        HelperFunctions.NullCheck(_player);
+        HelperFunctions.NullCheck(_animator);
     }
 
     // Update is called once per frame
@@ -42,26 +47,36 @@ public class Enemy : MonoBehaviour
         if (collision.tag == Constants.TAG_LASER || collision.tag == Constants.TAG_PLAYER && _player.IsShieldActive())
         {
             Debug.Log("Enemy.OnTriggerEnter2D(): _enemyId: " + _enemyId);
+            HandleEnemyDestroyedScoringSystem();
+            DestroyEnemySequence();
+        }
+    }
 
-            if (_player)
+    private void DestroyEnemySequence()
+    {
+        _animator.SetTrigger(Constants.TRIGGER_ENEMY_DESTROYED_ANIMATION);
+        _speed = 0;
+        Destroy(gameObject, Constants.ENEMY_DESTROYED_DELAY);
+    }
+
+    private void HandleEnemyDestroyedScoringSystem()
+    {
+        if (_player)
+        {
+            switch (_enemyId)
             {
-                switch (_enemyId)
-                {
-                    case (int)Enums.Enemies.ENEMY_SHIP:
-                        _player.HandleScoreSystem(Constants.ENEMY_DESTROYED_SHIP_VALUE);
-                        break;
+                case (int)Enums.Enemies.ENEMY_SHIP:
+                    _player.HandleScoreSystem(Constants.ENEMY_DESTROYED_SHIP_VALUE);
+                    break;
 
-                    case (int)Enums.Enemies.ENEMY_ASTEROID:
-                        _player.HandleScoreSystem(Constants.ENEMY_DESTROYED_ASTEROID_VALUE);
-                        break;
+                case (int)Enums.Enemies.ENEMY_ASTEROID:
+                    _player.HandleScoreSystem(Constants.ENEMY_DESTROYED_ASTEROID_VALUE);
+                    break;
 
-                    default:
-                        Debug.LogError("Invalid enemy id: " + _enemyId);
-                        break;
-                }
+                default:
+                    Debug.LogError("Invalid enemy id: " + _enemyId);
+                    break;
             }
         }
-
-        Destroy(gameObject);
     }
 }

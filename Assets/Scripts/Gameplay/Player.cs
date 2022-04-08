@@ -37,8 +37,8 @@ public class Player : MonoBehaviour
         _uIManager = HelperFunctions.GetUIManagerReference();
         _gameManager = HelperFunctions.GetGameManagerReference();
 
-        HelperFunctions.CheckForNull(_uIManager);
-        HelperFunctions.CheckForNull(_gameManager);
+        HelperFunctions.NullCheck(_uIManager);
+        HelperFunctions.NullCheck(_gameManager);
     }
 
     void Update()
