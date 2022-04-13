@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private GameObject _tripleShotPrefab;
     [SerializeField] private GameObject _shieldVisualizer;
+    [SerializeField] private GameObject _explosion;
 
     [SerializeField] private float _speed = 0.0f;
     [SerializeField] private float _fireRate = 0.25f;
@@ -33,7 +34,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        transform.position = new Vector3(0, 0, 0);
+        transform.position = new Vector3(0, Constants.CAMERA_DOWN_POINT, 0);
         _uIManager = HelperFunctions.GetUIManagerReference();
         _gameManager = HelperFunctions.GetGameManagerReference();
 
@@ -181,7 +182,8 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(_isShieldActive)
+        //Debug.LogWarning(collision.tag + " " + collision.gameObject.name);
+        if (_isShieldActive)
         {
             return;
         }
@@ -192,7 +194,7 @@ public class Player : MonoBehaviour
 
             if (spawnManager) 
             {
-                spawnManager.PlayerStatus(false);
+                spawnManager.PlayerStatus(true);
             }
 
             Destroy(gameObject);

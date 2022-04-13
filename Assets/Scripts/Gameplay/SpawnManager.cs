@@ -3,17 +3,21 @@ using UnityEngine;
 using Utils;
 
 public class SpawnManager : MonoBehaviour
-{ 
+{
     [SerializeField] private GameObject _enemyContainer;
     [SerializeField] private GameObject _powerupContainer;
 
     [SerializeField] private GameObject[] _enemies;
     [SerializeField] private GameObject[] _powerUps;
 
-    private bool _canSpawnPrefab = true;
+    private bool _isPlayerDead = false;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
+    {
+        StartSpawning();
+    }
+
+    public void StartSpawning()
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnRandomPowerup());
@@ -21,21 +25,28 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnEnemyRoutine()
     {
-        while (_canSpawnPrefab)
+        yield return new WaitForSeconds(Constants.SPAWN_DELAY);
+        int randomEnemy = Random.Range(0, _enemies.Length);
+        AddObjectToContainer(GetSpawnItemRandomOnMap(_enemies[randomEnemy]), _enemyContainer);
+        yield return new WaitForSeconds(1.0f);
+
+        if (_isPlayerDead)
         {
-            int randomEnemy = Random.Range(0, _enemies.Length);
-            AddObjectToContainer(GetSpawnItemRandomOnMap(_enemies[0]), _enemyContainer);
-            yield return new WaitForSeconds(1.0f);
+            yield return null;
         }
     }
 
     IEnumerator SpawnRandomPowerup()
     {
-        while(_canSpawnPrefab)
+        yield return new WaitForSeconds(Constants.SPAWN_DELAY);
+        int randomPowerup = Random.Range(0, _powerUps.Length);
+        AddObjectToContainer(GetSpawnItemRandomOnMap(_powerUps[randomPowerup]), _powerupContainer);
+        yield return new WaitForSeconds(Random.Range(Constants.POWERUP_COOLDOWN_SPAWN_RANGE_LOW, Constants.POWERUP_COOLDOWN_SPAWN_RANGE_HIGH));
+
+
+        if (_isPlayerDead)
         {
-            int randomPowerup = Random.Range(0, _powerUps.Length);
-            AddObjectToContainer(GetSpawnItemRandomOnMap(_powerUps[randomPowerup]), _powerupContainer);
-            yield return new WaitForSeconds(Random.Range(Constants.POWERUP_COOLDOWN_SPAWN_RANGE_LOW, Constants.POWERUP_COOLDOWN_SPAWN_RANGE_HIGH));
+            yield return null;
         }
     }
 
@@ -54,6 +65,6 @@ public class SpawnManager : MonoBehaviour
 
     public void PlayerStatus(bool status)
     {
-        _canSpawnPrefab = status;
+        _isPlayerDead = status;
     }
 }

@@ -644,6 +644,8 @@ MonoBehaviour:
   _tripleShotPrefab: {fileID: 2536732624797390038, guid: ad63ba841bffc764498e3846378d6029,
     type: 3}
   _shieldVisualizer: {fileID: 1622819295}
+  _explosion: {fileID: 3717451740233914373, guid: ead7f4cfe2ba357439bf3f5a5cb7f6bc,
+    type: 3}
   _speed: 10
   _fireRate: 0.15
   _uIManager: {fileID: 0}
@@ -706,7 +708,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 995313349}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -3, z: 0}
   m_LocalScale: {x: 0.35, y: 0.35, z: 0}
   m_Children:
   - {fileID: 1528650416}
@@ -1173,8 +1175,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: -60}
-  m_SizeDelta: {x: 97.3, y: 30}
+  m_AnchoredPosition: {x: -107.67, y: -78}
+  m_SizeDelta: {x: 197, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1843589924
 MonoBehaviour:

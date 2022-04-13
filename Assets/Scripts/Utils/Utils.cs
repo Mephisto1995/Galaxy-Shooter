@@ -29,7 +29,7 @@ namespace Utils
         public static readonly string TAG_PLAYER = "Player";
         public static readonly string TAG_ENEMY  = "Enemy";
         public static readonly string TAG_LASER  = "Laser";
-
+        public static readonly string TAG_EXPLOSION  = "Explosion";
         public static readonly string TAG_POWERUP_TRIPLE_SHOT  = "TripleShotPowerup";
         public static readonly string TAG_POWERUP_SPEED = "SpeedPowerup";
 
@@ -42,7 +42,9 @@ namespace Utils
 
         public static readonly string TRIGGER_ENEMY_DESTROYED_ANIMATION = "OnEnemyDeath";
 
-        public static readonly float ENEMY_DESTROYED_DELAY = 2.8f;
+        public static readonly float ENEMY_SHIP_DESTROYED_DELAY = 2.8f;
+        public static readonly float EXPLOSION_DESTROYED_DELAY = 1.5f;
+        public static readonly float SPAWN_DELAY = 3.0f;
     }
 
     public static class Enums
@@ -97,9 +99,46 @@ namespace Utils
         // mostly used for objects created at startup
         public static void NullCheck(object obj)
         {
-            if(obj == null)
+            if (obj == null)
             {
-                Debug.LogError(obj + " is null!");
+                Debug.LogError(obj.ToString() + " is null!");
+            }
+        }
+
+        public static Enums.Enemies GetEnemyType(int enemyId)
+        {
+            Debug.Log("HelperFunctions.GetEnemyType() enemyId: " + enemyId);
+
+            switch (enemyId)
+            {
+                case (int)Enums.Enemies.ENEMY_ASTEROID:
+                    return Enums.Enemies.ENEMY_ASTEROID;
+
+                case (int)Enums.Enemies.ENEMY_SHIP:
+                    return Enums.Enemies.ENEMY_SHIP;
+
+                default:
+                    return Enums.Enemies.ENEMY_UNKOWN;
+            }
+        }
+
+        public static Enums.Powerups GetPowerupType(int powerupId)
+        {
+            Debug.Log("HelperFunctions.GetPowerupType() powerupId: " + powerupId);
+
+            switch (powerupId)
+            {
+                case (int)Enums.Powerups.POWERUP_TRIPLE_SHOT:
+                    return Enums.Powerups.POWERUP_TRIPLE_SHOT;
+
+                case (int)Enums.Powerups.POWERUPT_SPEED:
+                    return Enums.Powerups.POWERUPT_SPEED;
+
+                case (int)Enums.Powerups.POWERUP_SHIELD:
+                    return Enums.Powerups.POWERUP_SHIELD;
+
+                default:
+                    return Enums.Powerups.POWERUP_UNKNOWN;
             }
         }
     }

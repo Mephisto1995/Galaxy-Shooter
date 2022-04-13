@@ -98,6 +98,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 5
   _enemyId: 1
+  _rotationSpeed: 2
+  _explosion: {fileID: 3717451740233914373, guid: ead7f4cfe2ba357439bf3f5a5cb7f6bc,
+    type: 3}
+  _enemyShipAnimationInProgress: 0
 --- !u!61 &2128244405481288686
 BoxCollider2D:
   m_ObjectHideFlags: 0
